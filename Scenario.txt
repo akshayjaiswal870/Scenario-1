@@ -1,0 +1,68 @@
+import "./styles.css";
+import React, { useState } from "react";
+
+export default function App() {
+  const [input, setInput] = useState("");
+  const [total, setTotal] = useState();
+  const [golden, setGolden] = useState(false);
+  const [reminder, setReminder] = useState("");
+  const [show, setShow] = useState(false);
+  const handleSubmit = (e) => {
+    console.clear();
+    e.preventDefault();
+
+    if (input === "0" || /^\d*[1-9]\d*\d*$/g.test(input) === false) {
+      alert(
+        'Input value cannot consist of a single "0" , only multiple zeros, operator or character'
+      );
+    } else {
+      setInput("");
+      console.log(input);
+      const split = input.split("").map(Number);
+      console.log(split);
+      const sum = split.reduce((acc, curr) => {
+        acc = acc + curr;
+        return acc;
+      });
+      console.log(sum);
+      setTotal(sum);
+      const length = split.length;
+      console.log(length);
+      const reminder = sum % length;
+      setReminder(reminder);
+      console.log(reminder);
+      if (reminder === 0) {
+        setGolden(true);
+      } else {
+        setGolden(false);
+      }
+      setShow(true);
+    }
+  };
+  return (
+    <div className="App">
+      <form onSubmit={handleSubmit}>
+        <label>Enter number : </label>
+        <input
+          type="number"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+      </form>
+      {show && (
+        <p style={{ backgroundColor: "rgb(20, 202, 187)" }}>Sum {total}</p>
+      )}
+      {show && (
+        <p style={{ backgroundColor: "rgb(20, 202, 187)" }}>
+          Reminder {reminder}
+        </p>
+      )}
+      {show &&
+        (golden ? (
+          <p style={{ backgroundColor: "gold" }}>Is Golden</p>
+        ) : (
+          <p style={{ backgroundColor: "red" }}>Not Golden</p>
+        ))}
+    </div>
+  );
+}
